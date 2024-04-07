@@ -29,8 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('update-post', function(User $user, Post $post){
-            return $user->level === "editor";
+        Gate::define('update-post', function(User $user){
+            return $user->level === "editor" || $user->level === "admin";
         });
 
         Gate::define('create-post', function(User $user){

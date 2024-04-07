@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate as FacadesGate;
 
 class PostController extends Controller
@@ -56,13 +57,13 @@ if($success) {
     /**
      * Display the specified resource.
      */
-    public function show(Post $post, $id)
+    public function show($post_id)
     {
 
-   $response = FacadesGate::authorize('update-post', $post);
-
+        $post = DB::table('post')->where('post.post_id', $post_id)->first();
+   $response = FacadesGate::authorize('update-post');
    if($response->allowed()) {
- return view('update.post', compact('post'));
+ return view('post.edit', compact('post'));
    }
 
 return redirect()->back()->withErrors('Status Abort 403.');
@@ -71,9 +72,28 @@ return redirect()->back()->withErrors('Status Abort 403.');
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Request $request)
     {
+        $response = FacadesGate::authorize('create-post');
 
+        if(!$response->allowed()) {
+            return abort(403);
+        }
+
+        $request->validate(['title' => 'string|required', 'description' => 'string|required']);
+
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'categories' => $request->categories,
+            'slug' => Str::slug($request->title),
+            'tanggalDibuat' => now(),
+            'userID' => auth()->user()->userID,
+        ];
+$success =        Post::create($data);
+if($success) {
+    return to_route('home');
+}
     }
 
     /**

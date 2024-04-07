@@ -30,7 +30,7 @@
                     <div class="card-text">{{ $post->description }}</div>
                     <div class="card-footer text-muted">{{ $post->created_at->diffForHumans() }}</div>
                     @can('update-post', $post)
-                    <div class="cta"><a href="{{ route('update.post', ['id' => $post->post_id]) }}" class="btn btn-sm text-end bg-success my-2 text-white">Edit</a></div>    
+                    <div class="cta"><a href="{{ route('update.post', ['post_id' => $post->post_id]) }}" class="btn btn-sm text-end bg-success my-2 text-white">Edit</a></div>
                     @endcan
                 </div>
             </div>

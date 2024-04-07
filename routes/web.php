@@ -23,4 +23,6 @@ Route::middleware(['auth'])->group(function(){
 
  Route::post('submit.post', [PostController::class, 'store'])->name('submit.post');
 
- Route::get('/posts/{id}', [PostController::class, 'show'])->name('update.post');
+ Route::get('/posts/{post_id}', [PostController::class, 'show'])->name('update.post');
+
+ Route::post('edit.post', [PostController::class, 'edit'])->name('edit.post');
