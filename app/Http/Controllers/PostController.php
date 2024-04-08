@@ -60,7 +60,7 @@ if($success) {
     public function show($post_id)
     {
 
-        $post = DB::table('post')->where('post.post_id', $post_id)->first();
+        $post = DB::table('post')->where('post.id', $post_id)->first();
    $response = FacadesGate::authorize('update-post');
    if($response->allowed()) {
  return view('post.edit', compact('post'));
@@ -72,10 +72,17 @@ return redirect()->back()->withErrors('Status Abort 403.');
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request)
+    public function edit(Request $request, $id)
     {
-        $response = FacadesGate::authorize('create-post');
 
+    }
+
+    /*
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $response = FacadesGate::authorize('update-post');
         if(!$response->allowed()) {
             return abort(403);
         }
@@ -90,25 +97,24 @@ return redirect()->back()->withErrors('Status Abort 403.');
             'tanggalDibuat' => now(),
             'userID' => auth()->user()->userID,
         ];
-$success =        Post::create($data);
-if($success) {
-    return to_route('home');
-}
-    }
+$post = Post::find($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
+$success = $post->update($data);
+
+if($success) {
+    return to_route('home')->withSuccess("Succesfully updated this POST.");
+}
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+
+        $deleted = $post->delete($post);
+
+        return redirect()->back();
     }
 }

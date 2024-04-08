@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>{{ $post->post_id }}</title>
+<title>{{ $post->id }}</title>
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 <body>
@@ -14,8 +14,9 @@
 <main>
     <section class="d-flex justify-content-center">
         <div class="container">
-           <form action="{{ route('edit.post') }}" method="POST" class="form-group card p-3">
+           <form action="{{ route('edit.post', ['post_id' => $post->id]) }}" method="POST" class="form-group card p-3">
             @csrf
+            @method('PUT')
             <div class="title"><h1 class="fw-bold">Edit Your POST</h1></div>
             <div class="row">
                 <div class="col-md-6 mb-3">

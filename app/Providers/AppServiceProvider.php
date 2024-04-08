@@ -36,5 +36,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('create-post', function(User $user){
             return $user->level === 'editor';
         });
+
+        Gate::define('delete-post', function(User $user) {
+            return $user->level === 'editor'|| $user->level === 'admin';
+        });
     }
 }

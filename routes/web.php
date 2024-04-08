@@ -17,12 +17,14 @@ Route::middleware(['auth'])->group(function(){
 
 
     Route::get('/create/post', [PostController::class, 'create'])->name('create.post');
-});
-
- Route::post('login', [SessionController::class, 'login'])->name('post.login');
 
  Route::post('submit.post', [PostController::class, 'store'])->name('submit.post');
 
- Route::get('/posts/{post_id}', [PostController::class, 'show'])->name('update.post');
+ Route::get('/posts/{id}', [PostController::class, 'show'])->name('update.post');
 
- Route::post('edit.post', [PostController::class, 'edit'])->name('edit.post');
+ Route::put('/posts/edit/{id}', [PostController::class, 'update'])->name('edit.post');
+
+    Route::post('/posts/delete/{id}', [PostController::class, 'destroy'])->name('post.delete');
+});
+
+ Route::post('login', [SessionController::class, 'login'])->name('post.login');

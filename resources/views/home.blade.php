@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class=G"row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
@@ -29,9 +29,15 @@
                     <div class="card-header fw-bold justify-content-between d-flex" style="border-bottom: 1px solid black; padding-bottom:5px;">{{ $post->title }} <div class="categories">Dibuat oleh {{ $post->name }}</div></div>
                     <div class="card-text">{{ $post->description }}</div>
                     <div class="card-footer text-muted">{{ $post->created_at->diffForHumans() }}</div>
-                    @can('update-post', $post)
-                    <div class="cta"><a href="{{ route('update.post', ['post_id' => $post->post_id]) }}" class="btn btn-sm text-end bg-success my-2 text-white">Edit</a></div>
+                    <div class="d-flex justify-content-between">
+                         @can('update-post', $post)
+                    <div class="cta"><a href="{{ route('update.post', ['id' => $post->id]) }}" class="btn btn-sm text-end bg-success my-2 text-white">Edit</a></div>
                     @endcan
+                    @can('delete-post', $post)
+                    <div class="cta mt-2"><form action="{{ route('post.delete', $post->id) }}" method="POST">@csrf <button class="btn btn-sm btn-danger" type="submit">Delete</button></form></div>
+                    @endcan
+                    </div>
+
                 </div>
             </div>
         </div>
